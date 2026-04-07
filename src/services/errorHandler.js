@@ -16,7 +16,7 @@ export default async function errorHandler(requestType, status, errorData) {
         return 'Unauthorized: Your session is invalid. Please log in again.';
     }
     if (status === 403) {
-        return 'Forbidden: You do not have permission to access this resource.';
+        return errorData?.message || 'Forbidden: You do not have permission to access this resource.';
     }
     if (status === 404) {
         return 'Not found: The requested resource does not exist.';

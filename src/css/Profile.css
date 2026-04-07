@@ -1,0 +1,190 @@
+/* src/css/Profile.css */
+
+/* Extend dashboard content styles for the profile page */
+.profile-page-content {
+    /* Uses dashboard-content for basic padding/margin */
+}
+
+/* New: Wrapper to center the page header content */
+.profile-page-header-wrapper {
+    max-width: 700px; /* Match the max-width of .profile-card */
+    margin: 0 auto 20px auto; /* Reduced margin-bottom from 30px to 20px */
+    text-align: center; /* Center text within the wrapper */
+    padding-bottom: 15px; /* Reduced padding-bottom from 20px to 15px */
+    border-bottom: 1px solid #e5e7eb; /* Subtle separator */
+}
+
+.profile-page-header-wrapper h1 {
+    font-size: 2.2rem;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.profile-page-header-wrapper p {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+
+/* Specific styling for the profile information card */
+.profile-card {
+    /* Inherits from .card in Dashboard.css */
+    max-width: 700px; /* Limit width for better readability */
+    margin: 0 auto; /* Center the card */
+    padding: 25px; /* Reduced padding from 30px to 25px */
+}
+
+.profile-card .card-header {
+    justify-content: center; /* Center the title in the profile card header */
+    margin-bottom: 20px; /* Reduced margin-bottom from 25px to 20px */
+    padding-bottom: 15px; /* Reduced padding-bottom from 20px to 15px */
+}
+
+.profile-card .card-header h2 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 0; /* Remove default margin */
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reduced gap from 15px to 10px */
+}
+
+.profile-detail-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0; /* Reduced padding from 12px to 10px */
+    border-bottom: 1px dashed #e5e7eb; /* Subtle separator */
+}
+
+.profile-detail-item:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.profile-detail-label {
+    font-weight: 600;
+    color: #4b5563;
+    min-width: 160px; /* Slightly reduced min-width for labels */
+    font-size: 0.95rem; /* Slightly smaller font size */
+}
+
+.profile-detail-value {
+    color: #1f2937;
+    flex-grow: 1; /* Allow value to take remaining space */
+    font-size: 0.95rem; /* Slightly smaller font size */
+}
+
+/* Style for subscribed authors list */
+.subscribed-authors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px; /* Reduced gap from 8px to 6px */
+}
+
+.subscribed-author-badge {
+    background-color: #e0f2fe; /* Light blue background */
+    color: #0c4a6e; /* Darker blue text */
+    padding: 5px 10px; /* Reduced padding from 6px 12px to 5px 10px */
+    border-radius: 20px;
+    font-size: 0.8rem; /* Slightly smaller font size */
+    font-weight: 500;
+}
+/* Add a style for the change password button */
+.change-password-btn {
+    margin-top: 20px; /* Reduced margin-top from 25px to 20px */
+    padding: 9px 18px; /* Slightly reduced padding */
+    background-color: #28a745; /* Green for a positive action */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem; /* Slightly smaller font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: flex-start; /* Align to left within the flex column container */
+}
+
+.change-password-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Styles for the password change form */
+.change-password-form {
+    margin-top: 25px; /* Reduced margin-top from 30px to 25px */
+    padding-top: 15px; /* Reduced padding-top from 20px to 15px */
+    border-top: 1px dashed #e5e7eb; /* Separator from other content */
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Reduced gap from 15px to 12px */
+}
+
+.change-password-form h3 {
+    font-size: 1.2rem; /* Slightly smaller font size */
+    color: #1f2937;
+    margin-bottom: 8px; /* Reduced margin-bottom from 10px to 8px */
+}
+
+.change-password-form .input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-password-form .input-group label {
+    font-size: 0.85rem; /* Slightly smaller font size */
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 5px; /* Reduced margin-bottom from 6px to 5px */
+}
+
+.change-password-form .input-group input {
+    padding: 10px; /* Reduced padding from 12px to 10px */
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem; /* Slightly smaller font size */
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.change-password-form .input-group input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Styles for the submit button within the change password form */
+.change-password-form .submit-btn {
+    margin-top: 10px; /* Reduced margin-top from 15px to 10px */
+    padding: 10px 20px; /* Reduced padding from 12px 25px to 10px 20px */
+    background-color: #3b82f6; /* Modern blue (your brand color) */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem; /* Slightly smaller font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition for all properties */
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2); /* Subtle blue shadow */
+    align-self: flex-end; /* Align to the right side of the form */
+    width: fit-content; /* Only as wide as its content */
+}
+
+.change-password-form .submit-btn:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+.change-password-form .submit-btn:active {
+    background-color: #1d4ed8; /* Even darker blue when clicked */
+    box-shadow: 0 2px 5px rgba(29, 78, 216, 0.2); /* Pressed in shadow */
+    transform: translateY(0); /* Return to original position */
+}
+
+.change-password-form .submit-btn:disabled {
+    background-color: #9cd4ff; /* Lighter blue when disabled */
+    cursor: not-allowed;
+    box-shadow: none; /* No shadow when disabled */
+    transform: translateY(0); /* No lift when disabled */
+    opacity: 0.7; /* Slightly faded when disabled */
+}

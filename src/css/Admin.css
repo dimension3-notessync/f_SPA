@@ -1,0 +1,263 @@
+/* src/css/Admin.css */
+
+/* Main content wrapper, consistent with other pages */
+.admin-page-content {
+    /* Uses dashboard-content for basic padding/margin.
+       Ensure that dashboard-content (from Dashboard.css) or main-content (from Layout.css)
+       provides the necessary base padding and layout. */
+}
+
+/* Wrapper to center the page header content for Admin */
+.admin-page-header-wrapper {
+    max-width: 1000px; /* Match the max-width of .admin-user-list-card for consistent centering */
+    margin: 0 auto 20px auto; /* Center it and add bottom margin */
+    text-align: center; /* Center text within the wrapper */
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb; /* Subtle separator */
+}
+
+.admin-page-header-wrapper h1 {
+    font-size: 2.2rem;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.admin-page-header-wrapper p {
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+/* Styles for the Tab Navigation */
+.admin-tab-nav {
+    max-width: 1000px;
+    margin: 0 auto 20px auto; /* Center tabs and add space below */
+    display: flex;
+    justify-content: center; /* Center the tab buttons themselves */
+    gap: 15px; /* Space between buttons */
+    border-bottom: 2px solid #e5e7eb; /* Underline for the tab area */
+}
+
+.admin-tab-nav button {
+    background-color: transparent;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #6b7280; /* Default text color */
+    cursor: pointer;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent; /* Placeholder for active underline */
+}
+
+.admin-tab-nav button:hover {
+    color: #3b82f6; /* Hover color */
+}
+
+.admin-tab-nav button.active {
+    color: #3b82f6; /* Active tab text color */
+    border-bottom: 2px solid #3b82f6; /* Active tab underline */
+}
+
+
+/* Card for the user list */
+.admin-user-list-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.admin-user-list-card .card-header {
+    justify-content: center; /* Changed from flex-start to center */
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+}
+
+.admin-user-list-card .card-header h2 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 0;
+}
+
+/* Table styles for displaying user data */
+.admin-user-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove space between cells */
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.admin-user-table th,
+.admin-user-table td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #e5e7eb; /* Subtle row separator */
+}
+
+.admin-user-table th {
+    background-color: #f9fafb; /* Light background for header */
+    color: #4b5563;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.admin-user-table tbody tr:hover {
+    background-color: #f3f4f6; /* Subtle highlight on row hover */
+}
+
+.admin-user-table td {
+    color: #374151;
+}
+
+/* Specific styling for permission level badges */
+.permission-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+}
+
+.permission-badge.level-0 { /* Unknown/Default */
+    background-color: #6b7280; /* Gray */
+}
+.permission-badge.level-1 { /* Viewer */
+    background-color: #3b82f6; /* Blue */
+}
+.permission-badge.level-2 { /* Student */
+    background-color: #10b981; /* Green */
+}
+.permission-badge.level-3 { /* Admin */
+    background-color: #f59e0b; /* Orange/Amber */
+}
+
+
+/* Styles for the table action buttons and dropdowns */
+.admin-user-table .action-cell {
+    white-space: nowrap; /* Prevent buttons/dropdowns from wrapping */
+    min-width: 210px; /* Ensure enough space for controls (dropdown + 2 buttons) */
+    display: flex; /* Use flex to align items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 8px; /* Space between elements in the action cell */
+}
+
+.admin-user-table .action-button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+    color: #374151;
+}
+
+.admin-user-table .action-button:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.admin-user-table .action-button.edit-permission {
+    background-color: #6366f1; /* Indigo for edit */
+    color: white;
+    border-color: #6366f1;
+}
+
+.admin-user-table .action-button.edit-permission:hover {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.admin-user-table .permission-select {
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    flex-grow: 1; /* Allows select to take available space */
+    background-color: white;
+    appearance: none; /* Remove default arrow on some browsers */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.2em;
+    cursor: pointer;
+}
+
+.admin-user-table .permission-select:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+
+.admin-user-table .save-button {
+    background-color: #28a745; /* Green for save */
+    color: white;
+    border-color: #28a745;
+}
+
+.admin-user-table .save-button:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.admin-user-table .cancel-button {
+    background-color: #ef4444; /* Red for cancel */
+    color: white;
+    border-color: #ef4444;
+}
+
+.admin-user-table .cancel-button:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+.admin-user-table .action-button:disabled,
+.admin-user-table .permission-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #e2e8f0;
+    color: #6b7280;
+    border-color: #cbd5e0;
+}
+
+
+.admin-audit-log-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.admin-audit-log-card .card-header {
+    justify-content: center; /* Changed from flex-start to center */
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+}
+
+.admin-audit-log-card .card-header h2 {
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 0;
+}
+
+
+/* No data message (reused from Dashboard.css) */
+.no-data-message {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 20px;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Error message (reused) */
+.error-message {
+    color: #dc2626; /* Red for errors */
+    background-color: #fee2e2; /* Light red background */
+    border: 1px solid #ef4444; /* Red border */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}

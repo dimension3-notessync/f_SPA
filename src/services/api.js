@@ -121,7 +121,7 @@ export const registerRequest = async (username, email, password) => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
     return await fetchFunction("registerRequest", USER_SERVICE_URL, '/', {
         method: 'POST',
-        body: JSON.stringify({username, email, password}),
+        body: JSON.stringify({username, email, password})
     }); // May return user data, or just a success message (no token)
 };
 
@@ -138,34 +138,56 @@ export const userProfileRequest = async () => {
         method: 'GET'
     }); // May return user data, or just a success message (no token)
 };
+export const changePasswordRequest = async (password, newPassword) => {
+    // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
+    return await fetchFunction("changePasswordRequest", USER_SERVICE_URL, '/password-change', {
+        method: 'PUT',
+        body: JSON.stringify({password, newPassword})
+    });
+};
+
+
+// CORRECTED: To match backend's expectation of (username, permissionLevel) in body
+// and endpoint /change/permissionLevel
+export const updateUserPermission = async (username, newPermissionLevel) => {
+    // Backend expects PUT http://localhost:11301/change/permissionLevel with { username, permissionLevel } in body
+    return await fetchFunction("updateUserPermission", USER_SERVICE_URL, `/permission`, {
+        method: 'PUT',
+        body: JSON.stringify({ username: username, permissionLevel: newPermissionLevel }),
+    });
+};
 //--------------------------------------------------------------------------------------------------------------------------------
 
 // Function to get upcoming lectures with a specified count
-export const getUpcomingLectures = async (count = 5) => {
-    const response = await fetch(`${URL}/next/${count}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include' // Important for sending cookies
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch upcoming lectures.');
+export const getUpcomingLectures = async (count = 2) => {
+    try {
+        // Use the common fetchFunction with the correct base URL and endpoint
+        const data = await fetchFunction("getUpcomingLectures", URL, `/next/${count}`, {
+            method: 'GET',
+        });
+        // fetchFunction returns the parsed JSON directly.
+        // Assuming your backend response for upcoming lectures has a 'data' key.
+        return data.data || [];
+    } catch (error) {
+        // fetchFunction already throws an error with a user-friendly message.
+        // Re-throw it so the Dashboard component can catch and display it.
+        throw error;
     }
-    const data = await response.json();
-    return data.data || []; // Assuming the backend returns { data: [...] }
 };
 
 // Function to get all uploaded files
 export const getAllFiles = async () => {
-    const response = await fetch(`${URL}/`, { // Assuming GET / returns all files
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch files.');
+    try {
+        // Use the common fetchFunction with the correct base URL and endpoint
+        const data = await fetchFunction("getAllFiles", URL, `/`, { // Assuming GET / returns all files
+            method: 'GET',
+        });
+        // fetchFunction returns the parsed JSON directly.
+        // Assuming your backend response for files has a 'files' key.
+        return data.files || [];
+    } catch (error) {
+        // fetchFunction already throws an error with a user-friendly message.
+        // Re-throw it so the Dashboard component can catch and display it.
+        throw error;
     }
-    const data = await response.json();
-    return data.files || []; // Assuming the backend returns { files: [...] }
 };
