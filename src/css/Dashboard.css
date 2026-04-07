@@ -1,0 +1,232 @@
+/* src/components/Dashboard.css */
+
+/* Main content wrapper within the layout */
+.dashboard-content {
+    /* Layout.css's main-content will provide padding, but you can add more if needed */
+}
+
+.page-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb; /* Subtle separator */
+}
+
+.page-header h1 {
+    font-size: 2.2rem;
+    color: #1f2937; /* Dark text for headings */
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    font-size: 1rem;
+    color: #6b7280; /* Muted text for descriptions */
+}
+
+/* Grid layout for dashboard sections (lectures, files) */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive columns */
+    gap: 30px; /* Space between the cards */
+}
+
+/* Base style for content cards */
+.card {
+    background-color: #ffffff; /* White background for cards */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft, modern shadow */
+    padding: 25px;
+    display: flex;
+    flex-direction: column; /* Content inside card stacks vertically */
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eef2f6; /* Subtle line below header */
+}
+
+.card-header h2 {
+    font-size: 1.5rem;
+    color: #1f2937;
+}
+
+.card-body {
+    flex-grow: 1; /* Allows the body to take up remaining space in the card */
+}
+
+.no-data-message {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* --- Lecture Section Styles --- */
+.lectures-section .input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lectures-section .input-group label {
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+.lectures-section .input-group select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.lectures-section .input-group select:focus {
+    border-color: #3b82f6; /* Brand color on focus */
+}
+
+.lecture-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between individual lecture items */
+}
+
+.lecture-item {
+    background-color: #f9fafb; /* Lighter background for items */
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    position: relative; /* For positioning badges */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03); /* Slight lift */
+}
+
+.lecture-meta {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px; /* Space between badges */
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+}
+
+.badge.online {
+    background-color: #10b981; /* Green */
+}
+
+.badge.in-person {
+    background-color: #6366f1; /* Indigo */
+}
+
+.badge.started {
+    background-color: #f59e0b; /* Orange */
+}
+
+.lecture-item h3 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin-bottom: 10px;
+    padding-right: 80px; /* Ensure title doesn't overlap badges */
+}
+
+.lecture-item p {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-bottom: 5px;
+}
+
+.lecture-item p strong {
+    color: #1f2937;
+}
+
+.lecture-description, .lecture-info {
+    margin-top: 10px;
+    color: #6b7280;
+    line-height: 1.5;
+    font-size: 0.85rem;
+}
+
+/* --- File Section Styles --- */
+.file-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow filters to wrap on smaller screens */
+    margin-bottom: 10px; /* Space between filters and file list */
+}
+
+.filter-input {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+    flex-grow: 1; /* Allows inputs to fill available space */
+    min-width: 120px; /* Minimum width for readability */
+}
+
+.filter-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between individual file items */
+}
+
+.file-item {
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.file-item h4 {
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.file-item h4 a {
+    text-decoration: none;
+    color: #3b82f6; /* Brand color for links */
+    transition: color 0.2s;
+}
+
+.file-item h4 a:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.file-item p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin-bottom: 4px;
+}
+
+.file-item p strong {
+    color: #1f2937;
+}
+
+.file-summary {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #6b7280;
+}

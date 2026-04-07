@@ -139,3 +139,33 @@ export const userProfileRequest = async () => {
     }); // May return user data, or just a success message (no token)
 };
 //--------------------------------------------------------------------------------------------------------------------------------
+
+// Function to get upcoming lectures with a specified count
+export const getUpcomingLectures = async (count = 5) => {
+    const response = await fetch(`${URL}/next/${count}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' // Important for sending cookies
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch upcoming lectures.');
+    }
+    const data = await response.json();
+    return data.data || []; // Assuming the backend returns { data: [...] }
+};
+
+// Function to get all uploaded files
+export const getAllFiles = async () => {
+    const response = await fetch(`${URL}/`, { // Assuming GET / returns all files
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch files.');
+    }
+    const data = await response.json();
+    return data.files || []; // Assuming the backend returns { files: [...] }
+};

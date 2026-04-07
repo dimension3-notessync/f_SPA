@@ -28,6 +28,10 @@ const Profile = () => {
                 setProfileInfo(data); // Store the data
                 setIsLoading(false);
             } catch (error) {
+                navigate('/dashboard', {
+                    replace: true,
+                    state: { message: 'Cannot display user information at this moment.' }
+                });
                 showNotification(error.message, 'error');
             }
         };

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useCallback, useRef } from 'react'; // Import useRef
-import Notification from '../components/Notification';
+import Notification from '../components/notification';
 
 const NotificationContext = createContext();
 

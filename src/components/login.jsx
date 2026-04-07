@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loginRequest, checkAuthSession } from '../services/api'; // Use checkAuthSession
 import { useNotification } from '../context/NotificationContext';
+import '../css/Auth.css'; // <-- Import the CSS
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -58,42 +59,46 @@ const Login = () => {
 
     // Only show loading if we are actively checking the session and no specific message is being displayed
     if (loading && !sessionMessage) {
-        return <p>Checking existing session...</p>;
+        return <div className="auth-wrapper"><p>Checking existing session...</p></div>;
     }
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
-            {/* Notifications will now handle messages */}
+        <div className="auth-wrapper">
+            <div className="auth-card">
+                {/* Add NoteSync here */}
+                <div className="auth-app-name">NoteSync</div>
 
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter username"
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password"
-                        required
-                    />
-                </div>
-                <button type="submit">Log In</button>
-            </form>
-            <p>
-                Don't have an account? <span onClick={() => navigate('/register')} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Register here</span>
-            </p>
+                <h2>Login</h2>
+                <form className="auth-form" onSubmit={handleLogin}>
+                    <div className="input-group">
+                        <label>Username:</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter username"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter password"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="auth-btn">Log In</button>
+                </form>
+                <p className="auth-footer">
+                    Don't have an account? <span className="auth-link" onClick={() => navigate('/register')}>Register here</span>
+                </p>
+            </div>
         </div>
     );
 };
 
 export default Login;
+

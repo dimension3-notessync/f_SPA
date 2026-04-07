@@ -1,0 +1,117 @@
+/* src/components/Auth.css */
+
+/* Full page background centering the card */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* Matches the dashboard background */
+    padding: 20px;
+}
+
+/* The white card container */
+.auth-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft, modern shadow */
+}
+
+.auth-card h2 {
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 24px;
+    font-size: 1.75rem;
+}
+
+/* Form Layout */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Spacing between input groups */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6; /* Modern blue */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); /* Soft glow on focus */
+}
+
+/* Primary Button */
+.auth-btn {
+    margin-top: 8px;
+    padding: 12px;
+    background-color: #3b82f6; /* Modern blue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.auth-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Footer Link */
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.auth-link {
+    color: #3b82f6;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.auth-card h2 {
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 24px;
+    font-size: 1.75rem;
+}
+
+/* New style for the app name/logo */
+.auth-app-name {
+    text-align: center;
+    font-size: 2.2rem; /* Make it prominent */
+    font-weight: 800; /* Bold */
+    color: #3b82f6; /* Use your brand blue */
+    margin-bottom: 20px; /* Space it from the Login/Register heading */
+    letter-spacing: 1px;
+}

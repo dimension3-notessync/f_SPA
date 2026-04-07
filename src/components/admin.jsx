@@ -18,7 +18,7 @@ const Admin = () => {
             } catch (error) {
                 // If fetchDashboardSpecificData fails (e.g., 401 from dashboard service), redirect to login
                 showNotification(error.message, 'error'); // Display the specific error
-                navigate('/login', {
+                navigate('/dashboard', {
                     replace: true,
                     state: { message: 'Your (admin) session has expired or is invalid. Please log in again.' }
                 });
