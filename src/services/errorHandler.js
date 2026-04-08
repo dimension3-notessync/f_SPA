@@ -13,7 +13,7 @@ export default async function errorHandler(requestType, status, errorData) {
 
 // Standard status-based overrides
     if (status === 401) {
-        return 'Unauthorized: Your session is invalid. Please log in again.';
+        return errorData?.message || 'Unauthorized: Your session is invalid. Please log in again.';
     }
     if (status === 403) {
         return errorData?.message || 'Forbidden: You do not have permission to access this resource.';

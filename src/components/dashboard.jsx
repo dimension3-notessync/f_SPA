@@ -7,85 +7,80 @@ import '../css/Dashboard.css';
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [lectures, setLectures] = useState([]);
-    const [lecturesError, setLecturesError] = useState(null); // New state
+    const [lecturesError, setLecturesError] = useState(null);
     const [allFiles, setAllFiles] = useState([]);
-    const [filesError, setFilesError] = useState(null);       // New state
+    const [filesError, setFilesError] = useState(null);
     const [lectureCount, setLectureCount] = useState(5);
     const [fileFilters, setFileFilters] = useState({ lectureID: '', subject: '', authorID: '' });
 
     const navigate = useNavigate();
     const { showNotification } = useNotification();
 
-    const formatDate = (timestamp) => {
-        if (!timestamp) return 'N/A';
-        const date = new Date(timestamp * 1000);
-        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-    };
+    // --- NEW: Define independent fetch functions ---
 
+    const fetchLectures = useCallback(async () => {
+        setLecturesError(null);
+        try {
+            const data = await getUpcomingLectures(lectureCount);
+            setLectures(data);
+        } catch (err) {
+            console.error("Failed to fetch upcoming lectures:", err);
+            if (err.message !== "No upcoming lectures found.") {
+                showNotification(err.message || "Failed to load upcoming lectures.", 'error');
+            }
+            setLecturesError(err.message || "Failed to load upcoming lectures.");
+            setLectures([]);
+        }
+    }, [lectureCount, showNotification]);
+
+    const fetchFiles = useCallback(async () => {
+        setFilesError(null);
+        try {
+            const data = await getAllFiles();
+            setAllFiles(data);
+        } catch (err) {
+            console.error("Failed to fetch uploaded files:", err);
+            if (err.message !== "No files found.") {
+                showNotification(err.message || "Failed to load uploaded files.", 'error');
+            }
+            setFilesError(err.message || "Failed to load uploaded files.");
+            setAllFiles([]);
+        }
+    }, [showNotification]);
+
+    // --- Effect 1: Initial Mount (Auth and First Data Load) ---
     useEffect(() => {
-        const verifyAuthAndFetchData = async () => {
+        const initialLoad = async () => {
             setIsLoading(true);
-            setLecturesError(null); // Clear previous errors on new fetch attempt
-            setFilesError(null);   // Clear previous errors on new fetch attempt
-
             try {
-                // --- Phase 1: Authentication Check (Critical) ---
-                // If this fails, the user is NOT authenticated. Redirect to login.
+                // Critical Auth Check
                 await requestDashboardAccess();
 
-                // --- Phase 2: Fetch Lectures (Independent) ---
-                const fetchLectures = async () => {
-                    try {
-                        const data = await getUpcomingLectures(lectureCount);
-                        setLectures(data);
-                    } catch (err) {
-                        console.error("Failed to fetch upcoming lectures:", err);
-                        // Only show notification for unexpected errors to the user
-                        if (err.message !== "No upcoming lectures found.") { // Adjust this message if your backend sends it
-                            showNotification(err.message || "Failed to load upcoming lectures.", 'error');
-                        }
-                        setLecturesError(err.message || "Failed to load upcoming lectures.");
-                        setLectures([]); // Clear previous lectures on error
-                    }
-                };
-
-                // --- Phase 3: Fetch Files (Independent) ---
-                const fetchFiles = async () => {
-                    try {
-                        const data = await getAllFiles();
-                        setAllFiles(data);
-                    } catch (err) {
-                        console.error("Failed to fetch uploaded files:", err);
-                        // Only show notification for unexpected errors to the user
-                        if (err.message !== "No files found.") { // Adjust this message if your backend sends it
-                            showNotification(err.message || "Failed to load uploaded files.", 'error');
-                        }
-                        setFilesError(err.message || "Failed to load uploaded files.");
-                        setAllFiles([]); // Clear previous files on error
-                    }
-                };
-
-                // Run these data fetches concurrently. Their individual errors are caught above.
+                // Fetch both for the first time
                 await Promise.all([fetchLectures(), fetchFiles()]);
-
             } catch (authError) {
-                // This catch block handles errors *only* from requestDashboardAccess()
-                // It means the user's session is truly invalid or unauthorized.
-                showNotification(authError.message || 'Your session has expired or is invalid. Please log in again.', 'error');
-                navigate('/login', {
-                    replace: true,
-                    state: { message: 'Your session has expired or is invalid. Please log in again.' }
-                });
+                showNotification(authError.message || 'Session invalid.', 'error');
+                navigate('/login', { replace: true });
             } finally {
-                setIsLoading(false); // Always set loading to false when all attempts are done
+                setIsLoading(false);
             }
         };
 
-        verifyAuthAndFetchData();
-    }, [navigate, showNotification, lectureCount]); // lectureCount in dependencies will trigger re-fetch of lectures
+        initialLoad();
+        // We only want this to run ONCE on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navigate, showNotification]);
 
+    // --- Effect 2: Update Lectures ONLY when lectureCount changes ---
+    useEffect(() => {
+        // Skip the very first run because InitialLoad handles it
+        if (!isLoading) {
+            fetchLectures();
+        }
+    }, [lectureCount, fetchLectures]); // Only triggers when lectureCount changes
 
-    // ... rest of your component (handleFilterChange, filteredFiles) ...
+    // ... rest of your logic (formatDate, handleFilterChange, etc.) ...
+
 
     const handleFilterChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -103,6 +98,24 @@ const Dashboard = () => {
             return lectureMatch && subjectMatch && authorMatch;
         });
     }, [allFiles, fileFilters]);
+
+    const formatDate = (timestamp) => {
+        if (!timestamp) return 'N/A';
+        const date = new Date(timestamp);
+
+        // 'en-GB' uses dd/mm/yyyy
+        const datePart = date.toLocaleDateString('en-GB');
+
+        // hour12: false forces 24h format
+        const timePart = date.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+
+        return `${datePart} ${timePart}`;
+    };
 
     if (isLoading) {
         return <p>Loading dashboard...</p>;
@@ -144,18 +157,19 @@ const Dashboard = () => {
                                 {lectures.map((lecture) => (
                                     <div key={lecture.id} className="lecture-item">
                                         <div className="lecture-meta">
-                                            {/* Badges for online/in-person and started status */}
+                                            {/* Online/In-person badge */}
                                             <span className={`badge ${lecture.online ? 'online' : 'in-person'}`}>
-                                                {lecture.online ? 'Online' : 'In-Person'}
-                                            </span>
-                                            {lecture.start && <span className="badge started">Started</span>}
+                                                {lecture.online ? 'Online' : 'In-Person'}</span>
+                                            {!lecture.start && (
+                                                <span className="badge canceled">Canceled</span>
+                                            )}
                                         </div>
                                         <h3>{lecture.lectureName}</h3>
                                         <p><strong>Lecturer:</strong> {lecture.lecturer}</p>
                                         <p><strong>Date:</strong> {formatDate(lecture.date)}</p>
                                         <p><strong>Room:</strong> {lecture.room}</p>
-                                        {lecture.description && <p className="lecture-description">{lecture.description}</p>}
-                                        {lecture.information && <p className="lecture-info">{lecture.information}</p>}
+                                        <p><strong>Description:</strong> {lecture.description}</p>
+                                        <p><strong>additional information:</strong> {lecture.information}</p>
                                     </div>
                                 ))}
                             </div>

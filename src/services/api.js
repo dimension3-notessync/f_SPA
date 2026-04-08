@@ -167,7 +167,7 @@ export const getUpcomingLectures = async (count = 2) => {
         });
         // fetchFunction returns the parsed JSON directly.
         // Assuming your backend response for upcoming lectures has a 'data' key.
-        return data.data || [];
+        return data.lectures || [];
     } catch (error) {
         // fetchFunction already throws an error with a user-friendly message.
         // Re-throw it so the Dashboard component can catch and display it.

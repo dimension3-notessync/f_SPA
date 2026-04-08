@@ -1,85 +1,83 @@
 /* src/components/Dashboard.css */
 
-/* Main content wrapper within the layout */
 .dashboard-content {
-    /* Layout.css's main-content will provide padding, but you can add more if needed */
+    width: 100%;
 }
 
 .page-header {
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #e5e7eb; /* Subtle separator */
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .page-header h1 {
     font-size: 2.2rem;
-    color: #1f2937; /* Dark text for headings */
+    color: #1f2937;
     margin-bottom: 8px;
 }
 
 .page-header p {
     font-size: 1rem;
-    color: #6b7280; /* Muted text for descriptions */
+    color: #6b7280;
 }
 
-/* Grid layout for dashboard sections (lectures, files) */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Responsive columns */
-    gap: 30px; /* Space between the cards */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
 }
 
-/* Base style for content cards */
 .card {
-    background-color: #ffffff; /* White background for cards */
+    background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft, modern shadow */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     padding: 25px;
     display: flex;
-    flex-direction: column; /* Content inside card stacks vertically */
+    flex-direction: column;
 }
 
+/* Updated Header to force horizontal layout */
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #eef2f6; /* Subtle line below header */
+    border-bottom: 1px solid #eef2f6;
+    flex-wrap: nowrap; /* Prevents title and dropdown from stacking */
 }
 
 .card-header h2 {
     font-size: 1.5rem;
     color: #1f2937;
+    margin: 0;
+    white-space: nowrap;
 }
 
 .card-body {
-    flex-grow: 1; /* Allows the body to take up remaining space in the card */
+    flex-grow: 1;
 }
 
-.no-data-message {
-    text-align: center;
-    color: #6b7280;
-    margin-top: 20px;
-    font-style: italic;
-}
-
-/* --- Lecture Section Styles --- */
+/* --- Lecture Section & Input Group Fix --- */
 .lectures-section .input-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0; /* Prevents the dropdown group from getting crushed */
 }
 
 .lectures-section .input-group label {
+    margin: 0;
     color: #4b5563;
     font-size: 0.95rem;
 }
 
 .lectures-section .input-group select {
-    padding: 8px 12px;
+    padding: 4px 8px;
     border: 1px solid #d1d5db;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 0.9rem;
     background-color: white;
     cursor: pointer;
@@ -88,22 +86,28 @@
 }
 
 .lectures-section .input-group select:focus {
-    border-color: #3b82f6; /* Brand color on focus */
+    border-color: #3b82f6;
 }
 
+.lectures-section .input-group span {
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+/* --- Lecture Item Styles --- */
 .lecture-list {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between individual lecture items */
+    gap: 20px;
 }
 
 .lecture-item {
-    background-color: #f9fafb; /* Lighter background for items */
+    background-color: #f9fafb;
     padding: 18px;
     border-radius: 10px;
     border: 1px solid #e5e7eb;
-    position: relative; /* For positioning badges */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03); /* Slight lift */
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
 
 .lecture-meta {
@@ -111,35 +115,28 @@
     top: 15px;
     right: 15px;
     display: flex;
-    gap: 8px; /* Space between badges */
+    gap: 8px;
 }
 
 .badge {
     display: inline-block;
     padding: 5px 10px;
-    border-radius: 20px; /* Pill shape */
+    border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
     color: white;
 }
 
-.badge.online {
-    background-color: #10b981; /* Green */
-}
-
-.badge.in-person {
-    background-color: #6366f1; /* Indigo */
-}
-
-.badge.started {
-    background-color: #f59e0b; /* Orange */
-}
+.badge.online { background-color: #10b981; }
+.badge.in-person { background-color: #6366f1; }
+.badge.started { background-color: #f59e0b; }
+.badge.canceled { background-color: #ef4444; }
 
 .lecture-item h3 {
     font-size: 1.25rem;
     color: #1f2937;
     margin-bottom: 10px;
-    padding-right: 80px; /* Ensure title doesn't overlap badges */
+    padding-right: 80px;
 }
 
 .lecture-item p {
@@ -163,8 +160,8 @@
 .file-filters {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap; /* Allow filters to wrap on smaller screens */
-    margin-bottom: 10px; /* Space between filters and file list */
+    flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
 .filter-input {
@@ -174,8 +171,8 @@
     font-size: 0.9rem;
     outline: none;
     transition: all 0.2s ease;
-    flex-grow: 1; /* Allows inputs to fill available space */
-    min-width: 120px; /* Minimum width for readability */
+    flex-grow: 1;
+    min-width: 120px;
 }
 
 .filter-input:focus {
@@ -186,7 +183,7 @@
 .file-list {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between individual file items */
+    gap: 15px;
 }
 
 .file-item {
@@ -205,8 +202,7 @@
 
 .file-item h4 a {
     text-decoration: none;
-    color: #3b82f6; /* Brand color for links */
-    transition: color 0.2s;
+    color: #3b82f6;
 }
 
 .file-item h4 a:hover {
@@ -229,4 +225,11 @@
     font-style: italic;
     font-size: 0.8rem;
     color: #6b7280;
+}
+
+.no-data-message {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 20px;
+    font-style: italic;
 }
