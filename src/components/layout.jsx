@@ -22,12 +22,13 @@ const Layout = () => {
         <div className="layout-container">
             <nav className="sidebar">
                 <h2>NoteSync</h2>
+                {/* Moved the Logout button here, right after the title */}
+                <button className="logout-btn" onClick={handleLogout}>Log Out</button>
                 <ul>
                     <li><Link to="/dashboard">Dashboard</Link></li>
                     <li><Link to="/me">Profile</Link></li>
                     <li><Link to="/admin">Admin</Link></li>
                 </ul>
-                <button className="logout-btn" onClick={handleLogout}>Log Out</button>
             </nav>
             <main className="main-content">
                 {/* Outlet renders the matched child route (Dashboard, Admin, or Profile) */}

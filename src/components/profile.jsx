@@ -31,7 +31,7 @@ const Profile = () => {
                 setProfileInfo(data);
             } catch (err) {
                 console.error("Failed to fetch profile data:", err);
-                if (err.status === 401 || err.status === 403) {
+                if (err.status === 401 || err.status === 403 || err.status === 400) {
                     showNotification(err.message || 'Your session has expired or is invalid. Please log in again.', 'error');
                     navigate('/login', {
                         replace: true,

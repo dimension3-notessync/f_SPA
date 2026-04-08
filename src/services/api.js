@@ -191,3 +191,13 @@ export const getAllFiles = async () => {
         throw error;
     }
 };
+
+export const addLectureRequest = async (lectureData) => {
+    // Assuming a POST request to URL/lectures endpoint
+    // lectureData should be an object containing lecturename, date, description, etc.
+    console.log(lectureData);
+    return await fetchFunction("addLectureRequest", URL, '/lectures', {
+        method: 'POST',
+        body: JSON.stringify(lectureData),
+    });
+};
