@@ -6,6 +6,7 @@ import errorHandler from "./errorHandler";
 const USER_SERVICE_URL = 'http://localhost:11301';
 const ACCESS_SERVICE_URL = 'http://localhost:11302'; // Dashboard specific endpoints
 const URL = 'http://localhost:11303';
+const files_URL = 'http://localhost:8082';
 
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -179,7 +180,7 @@ export const getUpcomingLectures = async (count = 2) => {
 export const getAllFiles = async () => {
     try {
         // Use the common fetchFunction with the correct base URL and endpoint
-        const data = await fetchFunction("getAllFiles", URL, `/`, { // Assuming GET / returns all files
+        const data = await fetchFunction("getAllFiles", files_URL, `/notes`, { // Assuming GET / returns all files
             method: 'GET',
         });
         // fetchFunction returns the parsed JSON directly.
@@ -200,4 +201,25 @@ export const addLectureRequest = async (lectureData) => {
         method: 'POST',
         body: JSON.stringify(lectureData),
     });
+};
+
+export const uploadFileRequest = async (noteFile, lectureID, subject) => {
+    const formData = new FormData();
+    formData.append('noteFile', noteFile);
+    formData.append('lectureID', lectureID);
+    formData.append('subject', subject);
+
+    // We use a modified version of fetchFunction or a direct fetch here
+    // because fetchFunction sets 'Content-Type': 'application/json' by default
+    const response = await fetch(`${files_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+        // No headers needed, browser sets multipart/form-data
+        credentials: 'include',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to upload file');
+    }
+    return response.json();
 };
