@@ -6,7 +6,9 @@ import errorHandler from "./errorHandler";
 const USER_SERVICE_URL = 'http://localhost:11301';
 const ACCESS_SERVICE_URL = 'http://localhost:11302'; // Dashboard specific endpoints
 const URL = 'http://localhost:11303';
+const AUTH_URL = 'http://localhost:11304';
 const files_URL = 'http://localhost:8082';
+const subs_URL = 'http://localhost:8083';
 
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +72,7 @@ const fetchFunction = async (requestType, baseUrl, url, options = {}) => {
 // login request
 export const loginRequest = async (username, password) => {
     // Backend should return 200 OK and set HttpOnly cookie
-    return await fetchFunction("loginRequest", URL, '/auth/login', {
+    return await fetchFunction("loginRequest", AUTH_URL, '/', {
         method: 'POST',
         body: JSON.stringify({username, password}),
     }); // May return user data, or just a success message (no token)
@@ -78,7 +80,7 @@ export const loginRequest = async (username, password) => {
 
 // backend deletes cookie
 export const logoutRequest = async () => {
-    await fetchFunction("logoutRequest", URL, '/auth/logout', {
+    await fetchFunction("logoutRequest", AUTH_URL, '/', {
         method: 'DELETE',
     });
     return true;
@@ -86,7 +88,7 @@ export const logoutRequest = async () => {
 
 // request to update token, also used to verify if user has token
 export const checkAuthSession = async () => {
-    return await fetchFunction("updateTokenRequest", URL, '/auth/token', {
+    return await fetchFunction("updateTokenRequest", AUTH_URL, '/token', {
         method: 'PUT',
     }); // Returns user data if valid, or throws error if 401/403
 };
