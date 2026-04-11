@@ -188,3 +188,75 @@
     transform: translateY(0); /* No lift when disabled */
     opacity: 0.7; /* Slightly faded when disabled */
 }
+
+.unsubscribe-btn {
+    background-color: #ef4444; /* A clear, warning red */
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+    margin-left: 10px; /* Pushes it slightly away from the 'Active' text */
+}
+
+.unsubscribe-btn:hover:not(:disabled) {
+    background-color: #dc2626; /* Darker red on hover */
+}
+
+.unsubscribe-btn:disabled {
+    background-color: #fca5a5; /* Lighter red when disabled */
+    cursor: not-allowed;
+}
+.subscribed-authors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px; /* Space between each badge+button group */
+}
+
+/* NEW: Wrapper for each author badge and its unsubscribe button */
+.subscribed-author-badge-wrapper {
+    display: inline-flex; /* Use inline-flex to keep them on one line, but allow flex properties */
+    align-items: center;
+    background-color: #e0f2fe; /* Light blue background for the whole unit */
+    border-radius: 20px;
+    padding-left: 10px; /* Padding for the text part */
+    gap: 4px; /* Small gap between text and button */
+}
+
+.subscribed-author-badge {
+    color: #0c4a6e; /* Darker blue text */
+    font-size: 0.8rem;
+    font-weight: 500;
+    /* Remove padding from here, it's now on the wrapper */
+}
+
+/* NEW: Style for the "X" unsubscribe button for authors */
+.unsubscribe-author-btn {
+    background-color: #ef4444; /* Red color */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Make it round */
+    width: 20px; /* Small fixed width */
+    height: 20px; /* Small fixed height */
+    font-size: 0.75rem; /* Smaller font for 'X' */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex; /* Flexbox for centering 'X' */
+    align-items: center;
+    justify-content: center;
+    margin-right: 2px; /* Small margin to keep it inside wrapper radius */
+}
+
+.unsubscribe-author-btn:hover:not(:disabled) {
+    background-color: #dc2626; /* Darker red on hover */
+}
+
+.unsubscribe-author-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #fca5a5; /* Lighter red when disabled */
+}

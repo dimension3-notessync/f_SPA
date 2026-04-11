@@ -5,10 +5,10 @@ import errorHandler from "./errorHandler";
 
 const USER_SERVICE_URL = 'http://localhost:11301';
 const ACCESS_SERVICE_URL = 'http://localhost:11302'; // Dashboard specific endpoints
-const URL = 'http://localhost:11303';
 const AUTH_URL = 'http://localhost:11304';
-const files_URL = 'http://localhost:8082';
-const subs_URL = 'http://localhost:8083';
+export const files_URL = 'http://localhost:11307';
+const subs_URL = 'http://localhost:11306';
+const LECTURES_URL = 'http://localhost:11305';
 
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -115,7 +115,11 @@ export const requestProfileAccess = async () => {
         method: 'GET',
     });
 };
-
+export const systemHealthRequest = async () => {
+    return await fetchFunction("systemHealthRequest", ACCESS_SERVICE_URL, '/health/check', {
+        method: 'GET',
+    });
+};
 
 //--------------------------------------------------------------------------------------------------------------------------------
 // --- User Service API Calls ---
@@ -160,17 +164,18 @@ export const updateUserPermission = async (username, newPermissionLevel) => {
     });
 };
 //--------------------------------------------------------------------------------------------------------------------------------
+// --- Lectures Service API Calls ---
 
 // Function to get upcoming lectures with a specified count
 export const getUpcomingLectures = async (count = 2) => {
     try {
         // Use the common fetchFunction with the correct base URL and endpoint
-        const data = await fetchFunction("getUpcomingLectures", URL, `/next/${count}`, {
+        const data = await fetchFunction("getUpcomingLectures", LECTURES_URL, `/next/${count}`, {
             method: 'GET',
         });
         // fetchFunction returns the parsed JSON directly.
         // Assuming your backend response for upcoming lectures has a 'data' key.
-        return data.lectures || [];
+        return data.data || [];
     } catch (error) {
         // fetchFunction already throws an error with a user-friendly message.
         // Re-throw it so the Dashboard component can catch and display it.
@@ -178,6 +183,57 @@ export const getUpcomingLectures = async (count = 2) => {
     }
 };
 
+export const addLectureRequest = async (lectureData) => {
+    // Assuming a POST request to URL/lectures endpoint
+    // lectureData should be an object containing lecturename, date, description, etc.
+    console.log(lectureData);
+    return await fetchFunction("addLectureRequest", LECTURES_URL, '/add', {
+        method: 'POST',
+        body: JSON.stringify(lectureData),
+    });
+};
+
+export const editLectureRequest = async (lectureId, updatedData) => {
+    // Backend expects POST or PUT to LECTURES_URL/edit with { id, ...updatedData } in body
+    // Critical: Ensure `start` and `online` are sent as strings 'true'/'false'
+    const payload = {
+        id: lectureId, // The backend expects the ID in the body
+        ...updatedData,
+        // Explicitly convert boolean values to strings as per backend's editHandler
+        start: updatedData.start.toString(),
+        online: updatedData.online.toString(),
+    };
+
+    return await fetchFunction("editLectureRequest", LECTURES_URL, `/edit`, { // Route is just /edit
+        method: 'PUT',
+        body: JSON.stringify(payload),
+    });
+};
+//--------------------------------------------------------------------------------------------------------------------------------
+// --- Subscription Service API Calls ---
+
+export const subscribeToLecture = async () => {
+    return await fetchFunction("subscribeToLecture", subs_URL, '/lectures', {
+        method: 'POST'
+    });
+};
+export const unsubscribeFromLecture = async () => {
+    return await fetchFunction("unsubscribeFromLecture", subs_URL, '/lectures', {
+        method: 'DELETE'
+    });
+};
+export const subscribeToAuthor = async (authorId) => {
+    return await fetchFunction("subscribeToAuthor", subs_URL, '/author/name', {
+        method: 'POST',
+        body: JSON.stringify({ authorname: authorId.toString() }), // Backend expects string representation of author ID
+    });
+};
+export const unsubscribeFromAuthor = async (authorUsername) => { // Expect username as argument
+    return await fetchFunction("unsubscribeFromAuthor", subs_URL, `/author/${authorUsername}`, {
+        method: 'DELETE',
+    });
+};
+//--------------------------------------------------------------------------------------------------------------------------------
 // Function to get all uploaded files
 export const getAllFiles = async () => {
     try {
@@ -193,16 +249,6 @@ export const getAllFiles = async () => {
         // Re-throw it so the Dashboard component can catch and display it.
         throw error;
     }
-};
-
-export const addLectureRequest = async (lectureData) => {
-    // Assuming a POST request to URL/lectures endpoint
-    // lectureData should be an object containing lecturename, date, description, etc.
-    console.log(lectureData);
-    return await fetchFunction("addLectureRequest", URL, '/lectures', {
-        method: 'POST',
-        body: JSON.stringify(lectureData),
-    });
 };
 
 export const uploadFileRequest = async (noteFile, lectureID, subject) => {
@@ -225,3 +271,4 @@ export const uploadFileRequest = async (noteFile, lectureID, subject) => {
     }
     return response.json();
 };
+//--------------------------------------------------------------------------------------------------------------------------------

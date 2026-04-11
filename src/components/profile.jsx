@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Import changePasswordRequest along with others
-import { requestProfileAccess, userProfileRequest, changePasswordRequest } from '../services/api';
+import {
+    requestProfileAccess,
+    userProfileRequest,
+    changePasswordRequest,
+    unsubscribeFromLecture,
+    unsubscribeFromAuthor
+} from '../services/api';
 import { useNotification } from '../context/NotificationContext';
 import '../css/Profile.css';
 
@@ -10,48 +15,47 @@ const Profile = () => {
     const [profileInfo, setProfileInfo] = useState(null);
     const [error, setError] = useState(null);
 
-    // State for password change form
     const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [isSubmittingPasswordChange, setIsSubmittingPasswordChange] = useState(false);
 
+    const [isUnsubscribing, setIsUnsubscribing] = useState(false);
+    const [isUnsubscribingAuthorId, setIsUnsubscribingAuthorId] = useState(null);
+
+
     const navigate = useNavigate();
     const { showNotification } = useNotification();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            setError(null);
+    // --- All Function Definitions are Moved Here, Before useEffect and Early Returns ---
 
-            try {
-                await requestProfileAccess();
-                const data = await userProfileRequest();
-                setProfileInfo(data);
-            } catch (err) {
-                console.error("Failed to fetch profile data:", err);
-                if (err.status === 401 || err.status === 403 || err.status === 400) {
-                    showNotification(err.message || 'Your session has expired or is invalid. Please log in again.', 'error');
-                    navigate('/login', {
-                        replace: true,
-                        state: { message: 'Your session has expired or is invalid. Please log in again.' }
-                    });
-                } else {
-                    setError(err.message || "Failed to load user profile information.");
-                    showNotification(err.message || "Failed to load user profile information.", 'error');
-                }
-            } finally {
-                setIsLoading(false);
+    const fetchProfileData = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            await requestProfileAccess();
+            const data = await userProfileRequest();
+            setProfileInfo(data);
+        } catch (err) {
+            console.error("Failed to fetch profile data:", err);
+            if (err.status === 401 || err.status === 403 || err.status === 400) {
+                showNotification(err.message || 'Your session has expired or is invalid. Please log in again.', 'error');
+                navigate('/login', {
+                    replace: true,
+                    state: { message: 'Your session has expired or is invalid. Please log in again.' }
+                });
+            } else {
+                setError(err.message || "Failed to load user profile information.");
+                showNotification(err.message || "Failed to load user profile information.", 'error');
             }
-        };
-        fetchData();
-    }, [navigate, showNotification]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    // Function to toggle the password change form visibility
     const toggleChangePasswordForm = () => {
         setShowChangePasswordForm(prev => !prev);
-        // Clear password fields when closing the form
         if (showChangePasswordForm) {
             setOldPassword('');
             setNewPassword('');
@@ -59,7 +63,6 @@ const Profile = () => {
         }
     };
 
-    // Handler for password change form submission
     const handleChangePasswordSubmit = async (e) => {
         e.preventDefault();
         if (isSubmittingPasswordChange) return;
@@ -69,7 +72,7 @@ const Profile = () => {
             return;
         }
 
-        if (!oldPassword || !newPassword || newPassword.length < 12) { // Basic validation
+        if (!oldPassword || !newPassword || newPassword.length < 12) {
             showNotification('Please enter valid old and new passwords (new password minimum 12 characters).', 'error');
             return;
         }
@@ -78,7 +81,7 @@ const Profile = () => {
         try {
             await changePasswordRequest(oldPassword, newPassword);
             showNotification('Password changed successfully!', 'success');
-            toggleChangePasswordForm(); // Close form on successful submission
+            toggleChangePasswordForm();
         } catch (err) {
             showNotification(err.message || 'Failed to change password.', 'error');
         } finally {
@@ -86,10 +89,49 @@ const Profile = () => {
         }
     };
 
-    if (isLoading) {
+    const handleUnsubscribeLectures = async () => {
+        setIsUnsubscribing(true);
+        try {
+            await unsubscribeFromLecture();
+            showNotification('Unsubscribed from lecture notifications successfully.', 'success');
+            setProfileInfo(prev => ({ ...prev, lecturesSubscription: false }));
+        } catch (err) {
+            showNotification(err.message || 'Failed to unsubscribe.', 'error');
+        } finally {
+            setIsUnsubscribing(false);
+        }
+    };
+
+    const handleUnsubscribeAuthor = async (authorUserId, authorUsername) => {
+        setIsUnsubscribingAuthorId(authorUserId);
+        try {
+            await unsubscribeFromAuthor(authorUsername);
+            showNotification(`Unsubscribed from ${authorUsername} successfully.`, 'success');
+            setProfileInfo(prev => ({
+                ...prev,
+                subscribedAuthors: prev.subscribedAuthors.filter(
+                    author => author.userid !== authorUserId
+                )
+            }));
+        } catch (err) {
+            console.error("Unsubscribe Author Error:", err);
+            showNotification(err.message || `Failed to unsubscribe from ${authorUsername}.`, 'error');
+        } finally {
+            setIsUnsubscribingAuthorId(null);
+        }
+    };
+
+    // --- Effects ---
+    useEffect(() => {
+        fetchProfileData();
+    }, [navigate, showNotification]); // Added fetchProfileData to dependency array for completeness
+
+    // --- Early Return ---
+    if (isLoading && !profileInfo) {
         return <p>Loading profile...</p>;
     }
 
+    // --- Render JSX ---
     return (
         <div className="dashboard-content profile-page-content">
             <div className="profile-page-header-wrapper">
@@ -118,19 +160,39 @@ const Profile = () => {
                                 <span className="profile-detail-label">Permission Level:</span>
                                 <span className="profile-detail-value">{profileInfo.permissionLevel}</span>
                             </div>
+
                             <div className="profile-detail-item">
                                 <span className="profile-detail-label">Lectures Subscription:</span>
                                 <span className="profile-detail-value">
                                     {profileInfo.lecturesSubscription ? 'Active' : 'Inactive'}
                                 </span>
+                                {profileInfo.lecturesSubscription && (
+                                    <button
+                                        className="unsubscribe-btn"
+                                        onClick={handleUnsubscribeLectures}
+                                        disabled={isUnsubscribing}
+                                    >
+                                        {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
+                                    </button>
+                                )}
                             </div>
+
                             {profileInfo.subscribedAuthors && profileInfo.subscribedAuthors.length > 0 && (
                                 <div className="profile-detail-item">
                                     <span className="profile-detail-label">Subscribed Authors:</span>
                                     <div className="subscribed-authors-list">
-                                        {profileInfo.subscribedAuthors.map((author, index) => (
-                                            <span key={index} className="subscribed-author-badge">
-                                                {author.username}
+                                        {profileInfo.subscribedAuthors.map((author) => (
+                                            <span key={author.userid} className="subscribed-author-badge-wrapper">
+                                                <span className="subscribed-author-badge">
+                                                    {author.username}
+                                                </span>
+                                                <button
+                                                    className="unsubscribe-author-btn"
+                                                    onClick={() => handleUnsubscribeAuthor(author.userid, author.username)}
+                                                    disabled={isUnsubscribingAuthorId === author.userid}
+                                                >
+                                                    {isUnsubscribingAuthorId === author.userid ? '...' : 'X'}
+                                                </button>
                                             </span>
                                         ))}
                                     </div>
@@ -141,12 +203,10 @@ const Profile = () => {
                         <p className="no-data-message">No profile data available.</p>
                     )}
 
-                    {/* Change Password Button */}
                     <button onClick={toggleChangePasswordForm} className="change-password-btn">
                         {showChangePasswordForm ? 'Cancel Change' : 'Change Password'}
                     </button>
 
-                    {/* Conditional rendering for the Change Password Form */}
                     {showChangePasswordForm && (
                         <form onSubmit={handleChangePasswordSubmit} className="change-password-form">
                             <h3>Change Your Password</h3>

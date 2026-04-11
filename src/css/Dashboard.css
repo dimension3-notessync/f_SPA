@@ -286,3 +286,162 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.lecture-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Spacing between form groups */
+    margin-top: 10px; /* Space from the top of the lecture item */
+}
+
+.lecture-edit-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.lecture-edit-form label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.lecture-edit-form input[type="text"],
+.lecture-edit-form input[type="datetime-local"],
+.lecture-edit-form textarea {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: white;
+}
+
+.lecture-edit-form input[type="text"]:focus,
+.lecture-edit-form input[type="datetime-local"]:focus,
+.lecture-edit-form textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-end; /* Push buttons to the right */
+}
+
+/* Style for the "Edit" button when lecture is in display mode */
+.lecture-meta .action-button.edit-button {
+    /* Inherit btn-primary styles, then adjust for smaller size */
+    background-color: #3b82f6; /* Use primary blue */
+    color: white;
+    padding: 6px 12px; /* Slightly smaller padding */
+    border-radius: 8px; /* Consistent border-radius with other buttons */
+    font-size: 0.85rem; /* Slightly smaller font */
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+    margin-left: auto; /* Push to the right within lecture-meta */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.lecture-meta .action-button.edit-button:hover:not(:disabled) {
+    background-color: #2563eb; /* Darker blue on hover */
+}
+
+/* Ensure disabled buttons are visually distinct and not clickable */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Your existing btn-primary and btn-secondary should apply to the Save/Cancel buttons */
+.btn-primary, .btn-secondary {
+    /* ... existing styles ... */
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between Subscribe button and Show dropdown */
+}
+
+/* New success button style for the general Subscribe button */
+.btn-success {
+    background-color: #10b981;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: #059669;
+}
+
+.btn-success:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.file-item .file-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between title and file-actions */
+}
+
+.btn-download:hover {
+    background-color: #3b82f6; /* Darker blue on hover */
+    text-decoration: none; /* Keep underline removed */
+}
+
+.btn-subscribe-author {
+    background-color: #f59e0b; /* A warm orange color */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.btn-subscribe-author:hover:not(:disabled) {
+    background-color: #d97706; /* Darker orange on hover */
+}
+
+.btn-subscribe-author:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Make sure btn-download still looks good next to it */
+.btn-download {
+    background-color: #60a5fa;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-download:hover {
+    background-color: #3b82f6;
+    text-decoration: none;
+}

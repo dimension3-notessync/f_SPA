@@ -380,3 +380,27 @@
     opacity: 0.7;
 }
 
+/* src/css/Admin.css additions */
+
+.system-health-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.health-table td {
+    vertical-align: middle;
+}
+
+/* Reuse status badge styles from Dashboard.css */
+.health-table .badge {
+    padding: 4px 12px;
+    text-align: center;
+    min-width: 80px;
+}
+
+/* Ensure monospace for uptime */
+.health-table td:nth-child(3) {
+    color: #4b5563;
+    font-weight: 500;
+}
