@@ -121,7 +121,7 @@ export const systemHealthRequest = async () => {
 
 export const registerRequest = async (username, email, password) => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("registerRequest", `${URL}/user`, '', {
+    return await fetchFunction("registerRequest", `${URL}/users`, '', {
         method: 'POST',
         body: JSON.stringify({username, email, password})
     }); // May return user data, or just a success message (no token)
@@ -129,20 +129,20 @@ export const registerRequest = async (username, email, password) => {
 
 export const userListRequest = async () => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("userListRequest", `${URL}/user`, '/list', {
+    return await fetchFunction("userListRequest", `${URL}/users`, '/list', {
         method: 'GET'
     }); // May return user data, or just a success message (no token)
 };
 
 export const userProfileRequest = async () => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("userProfileRequest", `${URL}/user`, '/me', {
+    return await fetchFunction("userProfileRequest", `${URL}/users`, '/me', {
         method: 'GET'
     }); // May return user data, or just a success message (no token)
 };
 export const changePasswordRequest = async (password, newPassword) => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("changePasswordRequest", `${URL}/user`, '/password-change', {
+    return await fetchFunction("changePasswordRequest", `${URL}/users`, '/password-change', {
         method: 'PUT',
         body: JSON.stringify({password, newPassword})
     });
@@ -153,7 +153,7 @@ export const changePasswordRequest = async (password, newPassword) => {
 // and endpoint /change/permissionLevel
 export const updateUserPermission = async (username, newPermissionLevel) => {
     // Backend expects PUT http://localhost:11301/change/permissionLevel with { username, permissionLevel } in body
-    return await fetchFunction("updateUserPermission", `${URL}/user`, `/permission`, {
+    return await fetchFunction("updateUserPermission", `${URL}/users`, `/permission`, {
         method: 'PUT',
         body: JSON.stringify({ username: username, permissionLevel: newPermissionLevel }),
     });
