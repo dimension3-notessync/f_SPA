@@ -4,7 +4,7 @@
 import errorHandler from "./errorHandler";
 
 const URL = 'https://notessync.lobes.it/api'
-export const files_URL = `${URL}`;
+export const files_URL = `${URL}/notes`;
 
 //--------------------------------------------------------------------------------------------------------------------------------
 // Generic fetch function adapted to accept a specific base URL
