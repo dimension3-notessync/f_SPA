@@ -179,8 +179,6 @@ export const getUpcomingLectures = async (count = 2) => {
 };
 
 export const addLectureRequest = async (lectureData) => {
-    // Assuming a POST request to URL/lectures endpoint
-    // lectureData should be an object containing lecturename, date, description, etc.
     console.log(lectureData);
     return await fetchFunction("addLectureRequest", `${URL}/lectures`, '/add', {
         method: 'POST',
