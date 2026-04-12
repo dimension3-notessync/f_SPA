@@ -3,13 +3,8 @@
 // Define base URLs for your microservices
 import errorHandler from "./errorHandler";
 
-const USER_SERVICE_URL = 'http://localhost:11301';
-const ACCESS_SERVICE_URL = 'http://localhost:11302'; // Dashboard specific endpoints
-const AUTH_URL = 'http://localhost:11304';
-export const files_URL = 'http://localhost:11307';
-const subs_URL = 'http://localhost:11306';
-const LECTURES_URL = 'http://localhost:11305';
-
+const URL = 'http://notessync.lobes.it/api'
+export const files_URL = `${URL}`;
 
 //--------------------------------------------------------------------------------------------------------------------------------
 // Generic fetch function adapted to accept a specific base URL
@@ -72,7 +67,7 @@ const fetchFunction = async (requestType, baseUrl, url, options = {}) => {
 // login request
 export const loginRequest = async (username, password) => {
     // Backend should return 200 OK and set HttpOnly cookie
-    return await fetchFunction("loginRequest", AUTH_URL, '/', {
+    return await fetchFunction("loginRequest", `${URL}/auth`, '', {
         method: 'POST',
         body: JSON.stringify({username, password}),
     }); // May return user data, or just a success message (no token)
@@ -80,7 +75,7 @@ export const loginRequest = async (username, password) => {
 
 // backend deletes cookie
 export const logoutRequest = async () => {
-    await fetchFunction("logoutRequest", AUTH_URL, '/', {
+    await fetchFunction("logoutRequest", `${URL}/auth`, '', {
         method: 'DELETE',
     });
     return true;
@@ -88,7 +83,7 @@ export const logoutRequest = async () => {
 
 // request to update token, also used to verify if user has token
 export const checkAuthSession = async () => {
-    return await fetchFunction("updateTokenRequest", AUTH_URL, '/token', {
+    return await fetchFunction("updateTokenRequest", `${URL}/auth`, '/token', {
         method: 'PUT',
     }); // Returns user data if valid, or throws error if 401/403
 };
@@ -99,24 +94,24 @@ export const checkAuthSession = async () => {
 
 export const requestDashboardAccess = async () => {
     // Assuming this endpoint requires a valid auth cookie to return dashboard-specific data
-    return await fetchFunction("dashboardAccessRequest", ACCESS_SERVICE_URL, '/dashboard', {
+    return await fetchFunction("dashboardAccessRequest", `${URL}/access`, '/dashboard', {
         method: 'GET',
     });
 };
 
 export const requestAdminAccess = async () => {
-    return await fetchFunction("adminAccessRequest", ACCESS_SERVICE_URL, '/admin', {
+    return await fetchFunction("adminAccessRequest", `${URL}/access`, '/admin', {
         method: 'GET',
     });
 };
 
 export const requestProfileAccess = async () => {
-    return await fetchFunction("profileAccessRequest", ACCESS_SERVICE_URL, '/profile', {
+    return await fetchFunction("profileAccessRequest", `${URL}/access`, '/profile', {
         method: 'GET',
     });
 };
 export const systemHealthRequest = async () => {
-    return await fetchFunction("systemHealthRequest", ACCESS_SERVICE_URL, '/health/check', {
+    return await fetchFunction("systemHealthRequest", `${URL}/access`, '/health/check', {
         method: 'GET',
     });
 };
@@ -126,7 +121,7 @@ export const systemHealthRequest = async () => {
 
 export const registerRequest = async (username, email, password) => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("registerRequest", USER_SERVICE_URL, '/', {
+    return await fetchFunction("registerRequest", `${URL}/user`, '', {
         method: 'POST',
         body: JSON.stringify({username, email, password})
     }); // May return user data, or just a success message (no token)
@@ -134,20 +129,20 @@ export const registerRequest = async (username, email, password) => {
 
 export const userListRequest = async () => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("userListRequest", USER_SERVICE_URL, '/list', {
+    return await fetchFunction("userListRequest", `${URL}/user`, '/list', {
         method: 'GET'
     }); // May return user data, or just a success message (no token)
 };
 
 export const userProfileRequest = async () => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("userProfileRequest", USER_SERVICE_URL, '/me', {
+    return await fetchFunction("userProfileRequest", `${URL}/user`, '/me', {
         method: 'GET'
     }); // May return user data, or just a success message (no token)
 };
 export const changePasswordRequest = async (password, newPassword) => {
     // Backend should return 200 OK and set HttpOnly cookie (if auto-login)
-    return await fetchFunction("changePasswordRequest", USER_SERVICE_URL, '/password-change', {
+    return await fetchFunction("changePasswordRequest", `${URL}/user`, '/password-change', {
         method: 'PUT',
         body: JSON.stringify({password, newPassword})
     });
@@ -158,7 +153,7 @@ export const changePasswordRequest = async (password, newPassword) => {
 // and endpoint /change/permissionLevel
 export const updateUserPermission = async (username, newPermissionLevel) => {
     // Backend expects PUT http://localhost:11301/change/permissionLevel with { username, permissionLevel } in body
-    return await fetchFunction("updateUserPermission", USER_SERVICE_URL, `/permission`, {
+    return await fetchFunction("updateUserPermission", `${URL}/user`, `/permission`, {
         method: 'PUT',
         body: JSON.stringify({ username: username, permissionLevel: newPermissionLevel }),
     });
@@ -170,7 +165,7 @@ export const updateUserPermission = async (username, newPermissionLevel) => {
 export const getUpcomingLectures = async (count = 2) => {
     try {
         // Use the common fetchFunction with the correct base URL and endpoint
-        const data = await fetchFunction("getUpcomingLectures", LECTURES_URL, `/next/${count}`, {
+        const data = await fetchFunction("getUpcomingLectures", `${URL}/lectures`, `/next/${count}`, {
             method: 'GET',
         });
         // fetchFunction returns the parsed JSON directly.
@@ -187,7 +182,7 @@ export const addLectureRequest = async (lectureData) => {
     // Assuming a POST request to URL/lectures endpoint
     // lectureData should be an object containing lecturename, date, description, etc.
     console.log(lectureData);
-    return await fetchFunction("addLectureRequest", LECTURES_URL, '/add', {
+    return await fetchFunction("addLectureRequest", `${URL}/lectures`, '/add', {
         method: 'POST',
         body: JSON.stringify(lectureData),
     });
@@ -204,7 +199,7 @@ export const editLectureRequest = async (lectureId, updatedData) => {
         online: updatedData.online.toString(),
     };
 
-    return await fetchFunction("editLectureRequest", LECTURES_URL, `/edit`, { // Route is just /edit
+    return await fetchFunction("editLectureRequest", `${URL}/lectures`, `/edit`, { // Route is just /edit
         method: 'PUT',
         body: JSON.stringify(payload),
     });
@@ -213,23 +208,23 @@ export const editLectureRequest = async (lectureId, updatedData) => {
 // --- Subscription Service API Calls ---
 
 export const subscribeToLecture = async () => {
-    return await fetchFunction("subscribeToLecture", subs_URL, '/lectures', {
+    return await fetchFunction("subscribeToLecture", `${URL}/subscriptions`, '/lectures', {
         method: 'POST'
     });
 };
 export const unsubscribeFromLecture = async () => {
-    return await fetchFunction("unsubscribeFromLecture", subs_URL, '/lectures', {
+    return await fetchFunction("unsubscribeFromLecture", `${URL}/subscriptions`, '/lectures', {
         method: 'DELETE'
     });
 };
 export const subscribeToAuthor = async (authorId) => {
-    return await fetchFunction("subscribeToAuthor", subs_URL, '/author/name', {
+    return await fetchFunction("subscribeToAuthor", `${URL}/subscriptions`, '/author/name', {
         method: 'POST',
         body: JSON.stringify({ authorname: authorId.toString() }), // Backend expects string representation of author ID
     });
 };
 export const unsubscribeFromAuthor = async (authorUsername) => { // Expect username as argument
-    return await fetchFunction("unsubscribeFromAuthor", subs_URL, `/author/${authorUsername}`, {
+    return await fetchFunction("unsubscribeFromAuthor", `${URL}/subscriptions`, `/author/${authorUsername}`, {
         method: 'DELETE',
     });
 };
