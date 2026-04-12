@@ -189,8 +189,6 @@ export const addLectureRequest = async (lectureData) => {
 };
 
 export const editLectureRequest = async (lectureId, updatedData) => {
-    // Backend expects POST or PUT to LECTURES_URL/edit with { id, ...updatedData } in body
-    // Critical: Ensure `start` and `online` are sent as strings 'true'/'false'
     const payload = {
         id: lectureId, // The backend expects the ID in the body
         ...updatedData,
