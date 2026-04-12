@@ -9,7 +9,7 @@ import Layout from './components/layout'; // Import Layout
 
 const App = () => {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/spa">
             <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />} />
