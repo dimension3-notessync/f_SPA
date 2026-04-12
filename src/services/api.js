@@ -3,7 +3,7 @@
 // Define base URLs for your microservices
 import errorHandler from "./errorHandler";
 
-const URL = 'http://notessync.lobes.it/api'
+const URL = 'https://notessync.lobes.it/api'
 export const files_URL = `${URL}`;
 
 //--------------------------------------------------------------------------------------------------------------------------------
