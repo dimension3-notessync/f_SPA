@@ -6,10 +6,9 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Production stage
 FROM nginx:alpine
-# VITE OUTPUTS TO /dist, NOT /build
-COPY --from=build /app/dist /usr/share/nginx/html
+# Ensure we copy the FOLDER content
+COPY --from=build /app/dist /usr/share/nginx/html/spa
+# Note: we put the files inside a 'spa' subfolder so the alias works
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
