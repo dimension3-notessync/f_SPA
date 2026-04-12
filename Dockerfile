@@ -7,8 +7,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
-# Ensure we copy the FOLDER content
+# This puts your files at /usr/share/nginx/html/spa/index.html etc.
 COPY --from=build /app/dist /usr/share/nginx/html/spa
-# Note: we put the files inside a 'spa' subfolder so the alias works
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
